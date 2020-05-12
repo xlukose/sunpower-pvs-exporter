@@ -1,12 +1,12 @@
 [Unit]
 Description=Prometheus exporter for SunPower PV Supervisor
-Documentation=https://github.com/ginoledesma/sunpower_pvs_exporter
+Documentation=https://github.com/xlukose/sunpower_pvs_exporter
 
 [Service]
 Restart=always
 User=prometheus
 EnvironmentFile=/etc/default/prometheus-sunpower-pvs-exporter
-ExecStart=/usr/local/berryconda3/bin/sunpower-pvs-exporter $ARGS
+ExecStart=/usr/local/bin/sunpower-pvs-exporter $ARGS
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
 SendSIGKILL=no
