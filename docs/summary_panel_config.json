@@ -16,8 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
-  "iteration": 1558829855789,
+  "id": 7,
   "links": [],
   "panels": [
     {
@@ -26,38 +25,40 @@
       "cacheTimeout": null,
       "dashLength": 10,
       "dashes": false,
-      "description": "Consumption vs Production - Average Real Power",
+      "datasource": null,
+      "description": "Average Real Power",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 11,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 7,
+      "hiddenSeries": false,
+      "id": 2,
       "legend": {
         "alignAsTable": true,
         "avg": true,
-        "current": true,
+        "current": false,
         "max": true,
         "min": true,
         "rightSide": false,
         "show": true,
-        "total": false,
+        "total": true,
         "values": true
       },
       "lines": true,
-      "linewidth": 2,
-      "links": [],
-      "nullPointMode": "null",
+      "linewidth": 1,
+      "nullPointMode": "connected",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
-      "pluginVersion": "6.1.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [
-        {}
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
@@ -68,7 +69,7 @@
           "displayAliasType": "Warning / Critical",
           "displayType": "Regular",
           "displayValueWithAlias": "Never",
-          "expr": "sum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"production\",job=\"$job\"})",
+          "expr": "sum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"production\"})",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 1,
@@ -78,7 +79,7 @@
           "valueHandler": "Number Threshold"
         },
         {
-          "expr": "sum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"production\",job=\"$job\"})\n+\nsum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"consumption\",job=\"$job\"})",
+          "expr": "sum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"production\"})\n+\nsum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"consumption\"})",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 1,
@@ -90,10 +91,10 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Power Consumption vs Production",
+      "title": "Consumption vs. Production",
       "tooltip": {
         "shared": true,
-        "sort": 1,
+        "sort": 0,
         "value_type": "individual"
       },
       "type": "graph",
@@ -106,8 +107,8 @@
       },
       "yaxes": [
         {
-          "format": "watt",
-          "label": "Power",
+          "format": "short",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
@@ -128,56 +129,8 @@
       }
     },
     {
-      "bgColor": null,
       "cacheTimeout": null,
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 0,
-        "y": 11
-      },
-      "id": 17,
-      "links": [],
-      "targets": [
-        {
-          "aggregation": "Last",
-          "crit": 1,
-          "decimals": 2,
-          "displayAliasType": "Always",
-          "displayType": "Regular",
-          "displayValueWithAlias": "When Alias Displayed",
-          "expr": "label_replace(\n  label_replace(\n    label_replace(\n      label_replace(\n        sunpower_pvs_device_state{job=\"$job\"}, \"device_id\", \"$1\", \"device_id\", \"^E[A-Za-z0-9]{9}(.*)\"\n      ),\n      \"device_id\", \"consumption\", \"device_id\", \"^PVS.*c$\"\n    ),\n    \"device_id\", \"production\", \"device_id\", \"^PVS.*p$\"\n  ),\n  \"device_id\", \"Supervisor\", \"device_id\", \"^ZT.*\"\n)",
-          "format": "time_series",
-          "instant": true,
-          "intervalFactor": 2,
-          "legendFormat": "{{device_type}}.{{device_id}}",
-          "refId": "A",
-          "units": "none",
-          "valueHandler": "Number Threshold",
-          "warn": 0
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Status",
-      "trafficLightSettings": {
-        "digits": 0,
-        "fontSize": "8px",
-        "greenThreshold": 0.99,
-        "invertScale": false,
-        "lightsPerLine": 5,
-        "max": 2,
-        "redThreshold": 0.99,
-        "showTrend": false,
-        "showValue": false,
-        "spreadControls": false,
-        "units": "",
-        "width": 24
-      },
-      "type": "snuids-trafficlights-panel"
-    },
-    {
-      "cacheTimeout": null,
+      "datasource": null,
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -187,38 +140,48 @@
       "id": 11,
       "links": [],
       "options": {
-        "maxValue": "4900",
-        "minValue": 0,
+        "fieldOptions": {
+          "calcs": [
+            "last"
+          ],
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 1,
+            "mappings": [],
+            "max": "4900",
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgb(120, 120, 120)",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "index": 1,
+                  "value": 300
+                },
+                {
+                  "color": "green",
+                  "index": 2,
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": [],
+          "values": false
+        },
         "orientation": "auto",
         "showThresholdLabels": false,
-        "showThresholdMarkers": false,
-        "thresholds": [
-          {
-            "color": "rgb(120, 120, 120)",
-            "index": 0,
-            "value": null
-          },
-          {
-            "color": "yellow",
-            "index": 1,
-            "value": 300
-          },
-          {
-            "color": "green",
-            "index": 2,
-            "value": 1000
-          }
-        ],
-        "valueMappings": [],
-        "valueOptions": {
-          "decimals": 1,
-          "prefix": "",
-          "stat": "last",
-          "suffix": "",
-          "unit": "watt"
-        }
+        "showThresholdMarkers": false
       },
-      "pluginVersion": "6.1.6",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "aggregation": "Last",
@@ -226,7 +189,7 @@
           "displayAliasType": "Warning / Critical",
           "displayType": "Regular",
           "displayValueWithAlias": "Never",
-          "expr": "sum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"production\",job=\"$job\"})",
+          "expr": "sum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"production\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -240,6 +203,7 @@
       "type": "gauge"
     },
     {
+      "datasource": null,
       "description": "",
       "gridPos": {
         "h": 5,
@@ -250,41 +214,51 @@
       "id": 14,
       "links": [],
       "options": {
-        "maxValue": 100,
-        "minValue": 0,
+        "fieldOptions": {
+          "calcs": [
+            "last"
+          ],
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 1,
+            "mappings": [],
+            "max": "2000",
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "index": 1,
+                  "value": 300
+                },
+                {
+                  "color": "red",
+                  "index": 2,
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": [],
+          "values": false
+        },
         "orientation": "auto",
         "showThresholdLabels": false,
-        "showThresholdMarkers": false,
-        "thresholds": [
-          {
-            "color": "green",
-            "index": 0,
-            "value": null
-          },
-          {
-            "color": "yellow",
-            "index": 1,
-            "value": 300
-          },
-          {
-            "color": "red",
-            "index": 2,
-            "value": 1000
-          }
-        ],
-        "valueMappings": [],
-        "valueOptions": {
-          "decimals": 1,
-          "prefix": "",
-          "stat": "last",
-          "suffix": "",
-          "unit": "watt"
-        }
+        "showThresholdMarkers": false
       },
-      "pluginVersion": "6.1.6",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
-          "expr": "sum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"consumption\",job=\"$job\"})\n+\nsum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"production\",job=\"$job\"})",
+          "expr": "sum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"consumption\"})\n+\nsum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"production\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -297,6 +271,7 @@
     },
     {
       "cacheTimeout": null,
+      "datasource": null,
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -306,38 +281,48 @@
       "id": 15,
       "links": [],
       "options": {
-        "maxValue": "10000",
-        "minValue": "-5000",
+        "fieldOptions": {
+          "calcs": [
+            "last"
+          ],
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 1,
+            "mappings": [],
+            "max": "10000",
+            "min": "-5000",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "index": 1,
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "index": 2,
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": [],
+          "values": false
+        },
         "orientation": "auto",
         "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "thresholds": [
-          {
-            "color": "green",
-            "index": 0,
-            "value": null
-          },
-          {
-            "color": "#EAB839",
-            "index": 1,
-            "value": 0
-          },
-          {
-            "color": "red",
-            "index": 2,
-            "value": 1000
-          }
-        ],
-        "valueMappings": [],
-        "valueOptions": {
-          "decimals": 1,
-          "prefix": "",
-          "stat": "last",
-          "suffix": "",
-          "unit": "watt"
-        }
+        "showThresholdMarkers": true
       },
-      "pluginVersion": "6.1.6",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "aggregation": "Last",
@@ -345,7 +330,7 @@
           "displayAliasType": "Warning / Critical",
           "displayType": "Regular",
           "displayValueWithAlias": "Never",
-          "expr": "sunpower_pvs_power_meter_average_real_power_watts{mode=\"consumption\",job=\"$job\"}",
+          "expr": "sunpower_pvs_power_meter_average_real_power_watts{mode=\"consumption\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -359,6 +344,7 @@
       "type": "gauge"
     },
     {
+      "datasource": null,
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -368,38 +354,48 @@
       "id": 19,
       "links": [],
       "options": {
-        "maxValue": "15",
-        "minValue": 0,
+        "fieldOptions": {
+          "calcs": [
+            "last"
+          ],
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 0,
+            "mappings": [],
+            "max": "15",
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "index": 1,
+                  "value": 4
+                },
+                {
+                  "color": "green",
+                  "index": 2,
+                  "value": 8
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [],
+          "values": false
+        },
         "orientation": "auto",
         "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "thresholds": [
-          {
-            "color": "red",
-            "index": 0,
-            "value": null
-          },
-          {
-            "color": "#EAB839",
-            "index": 1,
-            "value": 4
-          },
-          {
-            "color": "green",
-            "index": 2,
-            "value": 8
-          }
-        ],
-        "valueMappings": [],
-        "valueOptions": {
-          "decimals": 0,
-          "prefix": "",
-          "stat": "last",
-          "suffix": "/15",
-          "unit": "none"
-        }
+        "showThresholdMarkers": true
       },
-      "pluginVersion": "6.1.6",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "aggregation": "Last",
@@ -410,7 +406,7 @@
           "displayAliasType": "Always",
           "displayType": "Regular",
           "displayValueWithAlias": "When Alias Displayed",
-          "expr": "sum(sunpower_pvs_device_state{device_type=\"Inverter\",job=\"$job\"})",
+          "expr": "sum(sunpower_pvs_device_state{device_type=\"Inverter\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Inverter",
@@ -428,6 +424,7 @@
     },
     {
       "cacheTimeout": null,
+      "datasource": null,
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -437,33 +434,43 @@
       "id": 21,
       "links": [],
       "options": {
-        "maxValue": "5000",
-        "minValue": "",
+        "fieldOptions": {
+          "calcs": [
+            "max"
+          ],
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": null,
+            "mappings": [],
+            "max": "5000",
+            "min": "",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgb(120, 120, 120)",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "index": 1,
+                  "value": 1000
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": [],
+          "values": false
+        },
         "orientation": "auto",
         "showThresholdLabels": false,
-        "showThresholdMarkers": false,
-        "thresholds": [
-          {
-            "color": "rgb(120, 120, 120)",
-            "index": 0,
-            "value": null
-          },
-          {
-            "color": "green",
-            "index": 1,
-            "value": 1000
-          }
-        ],
-        "valueMappings": [],
-        "valueOptions": {
-          "decimals": null,
-          "prefix": "",
-          "stat": "max",
-          "suffix": "",
-          "unit": "watt"
-        }
+        "showThresholdMarkers": false
       },
-      "pluginVersion": "6.1.6",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "expr": "sum(sunpower_pvs_inverter_ac_power_watts{job=\"$job\"})",
@@ -480,6 +487,7 @@
     },
     {
       "cacheTimeout": null,
+      "datasource": null,
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -489,33 +497,43 @@
       "id": 12,
       "links": [],
       "options": {
-        "maxValue": "5000",
-        "minValue": "0",
+        "fieldOptions": {
+          "calcs": [
+            "last"
+          ],
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 1,
+            "mappings": [],
+            "max": "5000",
+            "min": "0",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "rgb(120, 120, 120)",
+                  "index": 0,
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "index": 1,
+                  "value": 0
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": [],
+          "values": false
+        },
         "orientation": "auto",
         "showThresholdLabels": false,
-        "showThresholdMarkers": false,
-        "thresholds": [
-          {
-            "color": "rgb(120, 120, 120)",
-            "index": 0,
-            "value": null
-          },
-          {
-            "color": "green",
-            "index": 1,
-            "value": 0
-          }
-        ],
-        "valueMappings": [],
-        "valueOptions": {
-          "decimals": 1,
-          "prefix": "",
-          "stat": "last",
-          "suffix": "",
-          "unit": "watt"
-        }
+        "showThresholdMarkers": false
       },
-      "pluginVersion": "6.1.6",
+      "pluginVersion": "6.7.3",
       "targets": [
         {
           "aggregation": "Last",
@@ -523,7 +541,7 @@
           "displayAliasType": "Warning / Critical",
           "displayType": "Regular",
           "displayValueWithAlias": "Never",
-          "expr": "clamp_min( 0 - sum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"consumption\",job=\"$job\"}), 0)",
+          "expr": "clamp_min( 0 - sum(sunpower_pvs_power_meter_average_real_power_watts{mode=\"consumption\"}), 0)",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A",
@@ -537,38 +555,14 @@
       "type": "gauge"
     }
   ],
-  "refresh": "5m",
-  "schemaVersion": 18,
+  "schemaVersion": 22,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {
-          "text": "sunpower_pvs",
-          "value": "sunpower_pvs"
-        },
-        "hide": 0,
-        "includeAll": false,
-        "label": "job",
-        "multi": false,
-        "name": "job",
-        "options": [
-          {
-            "selected": true,
-            "text": "sunpower_pvs",
-            "value": "sunpower_pvs"
-          }
-        ],
-        "query": "sunpower_pvs",
-        "skipUrlSync": false,
-        "type": "custom"
-      }
-    ]
+    "list": []
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -583,21 +577,13 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
-  "timezone": "browser",
+  "timezone": "",
   "title": "Summary",
-  "uid": "a-m04Iigk",
-  "version": 26
+  "uid": "UOPOUCZRz",
+  "variables": {
+    "list": []
+  },
+  "version": 11
 }
