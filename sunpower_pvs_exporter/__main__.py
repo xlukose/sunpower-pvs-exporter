@@ -54,7 +54,7 @@ def create_parser():
                        )
 
     parser.add_argument("--timeout",
-                        default=10,
+                        default=30,
                         type=int,
                         help="Connection timeout value (in seconds)"
                        )
